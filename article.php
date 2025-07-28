@@ -102,37 +102,6 @@ $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
                 <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="<?php echo htmlspecialchars($article['title']); ?>" class="article-featured-image">
 
                 <div class="article-content">
-                    <!-- <p class="article-intro">World leaders from over 100 countries convened in Paris today for the annual Global Climate Summit, with ambitious targets to reduce carbon emissions by 50% before 2030.</p>
-
-                    <p>The summit, hosted by French President Emmanuel Macron, brings together heads of state, environmental experts, and business leaders to address what many are calling the defining challenge of our generation.</p>
-
-                    <h2>Key Proposals</h2>
-                    <p>Several major proposals were put forward during the opening sessions:</p>
-                    <ul>
-                        <li>A global carbon tax framework</li>
-                        <li>Increased funding for renewable energy research</li>
-                        <li>Stricter regulations on industrial emissions</li>
-                        <li>International standards for sustainable agriculture</li>
-                    </ul>
-
-                    <blockquote>
-                        "This is not just an environmental issue, but an economic imperative and a moral obligation to future generations," said UN Secretary-General António Guterres in his opening address.
-                    </blockquote>
-
-                    <h2>Controversial Discussions</h2>
-                    <p>Not all nations were in agreement, however. Representatives from several developing nations argued that wealthier countries should bear more of the financial burden, citing historical emissions.</p>
-
-                    <img src="https://via.placeholder.com/600x400" alt="Protesters outside summit" class="article-inline-image">
-
-                    <p>Outside the summit venue, thousands of protesters gathered demanding more aggressive action, while climate activists staged demonstrations highlighting the urgency of the crisis.</p>
-
-                    <div class="article-tags">
-                        <span>Tags:</span>
-                        <a href="#">Climate Change</a>
-                        <a href="#">Paris Agreement</a>
-                        <a href="#">Sustainability</a>
-                        <a href="#">Global Policy</a>
-                    </div> -->
                     <?php echo htmlspecialchars($article['content']); ?>
                 </div>
 
@@ -163,18 +132,6 @@ $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
                     <button>Post Comment</button>
                 </div>
 
-                <!-- <div class="comment">
-                    <img src="https://via.placeholder.com/50" alt="User avatar">
-                    <div class="comment-content">
-                        <h4>Robert Johnson <span>1 hour ago</span></h4>
-                        <p>All talk as usual. Where's the enforcement mechanism? These summits produce nice declarations but little real change.</p>
-                        <div class="comment-actions">
-                            <a href="#">Reply</a>
-                            <a href="#"><i class="far fa-thumbs-up"></i> 8</a>
-                            <a href="#"><i class="far fa-thumbs-down"></i> 5</a>
-                        </div>
-                    </div>
-                </div> -->
                 <?php foreach($comments as $comment): ?>
                     <div class="comment">
                         <img src="https://via.placeholder.com/50" alt="User avatar">
@@ -197,18 +154,6 @@ $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
             <section class="related-articles">
                 <h2>Related Articles</h2>
                 <div class="grid">
-                    <!-- <article>
-                        <img src="https://via.placeholder.com/250" alt="Thumbnail">
-                        <h3>New Climate Study Shows Accelerated Warming</h3>
-                    </article>
-                    <article>
-                        <img src="https://via.placeholder.com/250" alt="Thumbnail">
-                        <h3>Renewable Energy Investments Reach Record High</h3>
-                    </article>
-                    <article>
-                        <img src="https://via.placeholder.com/250" alt="Thumbnail">
-                        <h3>Youth Climate Activists Plan Global Strike</h3>
-                    </article> -->
 
                     <?php foreach($related_articles as $related) :?>
                         <article>
@@ -217,6 +162,7 @@ $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
                         </article>
                     <?php endforeach; ?>
                 </div>
+                
             </section>
         </main>
 
