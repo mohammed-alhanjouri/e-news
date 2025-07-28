@@ -158,27 +158,29 @@ $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
                     <?php foreach($related_articles as $related) :?>
                         <article>
                             <img src="<?php echo htmlspecialchars($related['image_url']); ?>" alt="">
-                            <h3><?php echo htmlspecialchars($related['title']); ?></h3>
+                            <h3><a href="article.php?id=<?php echo $related['article_id']; ?>">
+                                <?php echo htmlspecialchars($related['title']); ?>
+                            </a></h3>
                         </article>
                     <?php endforeach; ?>
                 </div>
-                
+
             </section>
         </main>
 
         <aside class="sidebar">
             <h3>About the Author</h3>
             <div class="author-bio">
-                <img src="https://via.placeholder.com/100" alt="John Smith">
-                <h4>John Smith</h4>
-                <p>Senior Political Correspondent with over 15 years experience covering international affairs and climate policy.</p>
+                <img src="https://via.placeholder.com/100" alt="Author">
+                <h4>Author Name</h4>
+                <p>Author Bio</p>
                 <div class="author-social">
                     <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
                     <a href="#"><i class="fa-brands fa-linkedin"></i></a>
                 </div>
             </div>
 
-            <h3>Trending in Politics</h3>
+            <h3>Trending in <?php echo htmlspecialchars($article['category_name']); ?></h3>
             <ul>
                 <li><a href="#">Election Polls Show Tight Race</a></li>
                 <li><a href="#">New Legislation on Tech Regulation</a></li>
