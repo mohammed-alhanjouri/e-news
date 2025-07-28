@@ -1,9 +1,40 @@
+<?php
+
+include 'config/db.php';
+
+if(isset($_GET['id'])) {
+    $article_id = intval($_GET['id']);
+
+    // Fetch article details
+    $article_sql = "SELECT a.*, u.username, c.category_name 
+                    FROM articles a 
+                    JOIN users u ON a.author_id = u.user_id 
+                    JOIN categories c ON a.category_id = c.category_id 
+                    WHERE a.article_id = $article_id";
+    $article_result = mysqli_query($connection, $article_sql);
+    $article = mysqli_fetch_assoc($article_result);
+} else {
+    die("Article ID not provided.");
+}
+
+// Fetch comments for the article
+$comments_sql = "SELECT c.*, u.username 
+                 FROM comments c 
+                 JOIN users u ON c.user_id = u.user_id 
+                 WHERE c.article_id = $article_id 
+                 ORDER BY c.timestamp DESC";
+$comments_result = mysqli_query($connection, $comments_sql);
+$comments = mysqli_fetch_all($comments_result, MYSQLI_ASSOC);
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Truth News</title>
+    <title> <?php echo htmlspecialchars($article['title']); ?>| Truth News</title>
     <link rel="icon" href="truth-news.png" sizes="48x48" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
@@ -49,20 +80,20 @@
     <div class="layout-container">
         <main>
             <article class="single-article">
-                <span class="article-category">Politics</span>
-                <h1 class="article-title">Global Leaders Gather for Climate Summit</h1>
-                
+                <span class="article-category"><?php echo htmlspecialchars($article['category_name']); ?></span>
+                <h1 class="article-title"><?php echo htmlspecialchars($article['title']); ?></h1>
+
                 <div class="article-data">
-                    <span><i class="far fa-user"></i> By John Smith</span>
-                    <span><i class="far fa-clock"></i> Published 3 hours ago</span>
-                    <span><i class="far fa-comment"></i> 24 comments</span>
+                    <span><i class="far fa-user"></i> By <?php echo htmlspecialchars($article['username']); ?></span>
+                    <span><i class="far fa-clock"></i> Published <?php echo date('F j, Y', strtotime($article['published_date'])); ?></span>
+                    <span><i class="far fa-comment"></i> <?php echo count($comments) ?> comments</span>
                     <span><i class="fas fa-share-alt"></i> Share</span>
                 </div>
 
-                <img src="https://via.placeholder.com/800x450" alt="Climate Summit" class="article-featured-image">
+                <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="<?php echo htmlspecialchars($article['title']); ?>" class="article-featured-image">
 
                 <div class="article-content">
-                    <p class="article-intro">World leaders from over 100 countries convened in Paris today for the annual Global Climate Summit, with ambitious targets to reduce carbon emissions by 50% before 2030.</p>
+                    <!-- <p class="article-intro">World leaders from over 100 countries convened in Paris today for the annual Global Climate Summit, with ambitious targets to reduce carbon emissions by 50% before 2030.</p>
 
                     <p>The summit, hosted by French President Emmanuel Macron, brings together heads of state, environmental experts, and business leaders to address what many are calling the defining challenge of our generation.</p>
 
@@ -92,7 +123,8 @@
                         <a href="#">Paris Agreement</a>
                         <a href="#">Sustainability</a>
                         <a href="#">Global Policy</a>
-                    </div>
+                    </div> -->
+                    <?php echo htmlspecialchars($article['content']); ?>
                 </div>
 
                 <div class="article-actions">
@@ -115,27 +147,31 @@
             </article>
 
             <section class="article-comments">
-                <h2>Comments (24)</h2>
+                <h2>Comments (<?php echo count($comments); ?>)</h2>
                 <div class="comment-form">
                     <h3>Leave a Comment</h3>
                     <textarea placeholder="Share your thoughts..."></textarea>
                     <button>Post Comment</button>
                 </div>
 
-                <div class="comment">
-                    <img src="https://via.placeholder.com/50" alt="User avatar">
-                    <div class="comment-content">
-                        <h4>Jane Doe <span>2 hours ago</span></h4>
-                        <p>Finally some meaningful action! Though I worry these targets still aren't ambitious enough given the scale of the crisis.</p>
-                        <div class="comment-actions">
-                            <a href="#">Reply</a>
-                            <a href="#"><i class="far fa-thumbs-up"></i> 12</a>
-                            <a href="#"><i class="far fa-thumbs-down"></i> 2</a>
+                <?php foreach($comments as $comment): ?>
+                    <div class="comment">
+                        <img src="https://via.placeholder.com/50" alt="User avatar">
+                        <div class="comment-content">
+                            <h4><?php echo htmlspecialchars($comment['username']); ?>
+                                <span><?php echo htmlspecialchars($comment['timestamp']); ?></span>
+                            </h4>
+                            <p><?php echo htmlspecialchars($comment['comment_text']) ?></p>
+                            <div class="comment-actions">
+                                <a href="#">Reply</a>
+                                <a href="#"><i class="far fa-thumbs-up"></i> 12</a>
+                                <a href="#"><i class="far fa-thumbs-down"></i> 2</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
 
-                <div class="comment">
+                <!-- <div class="comment">
                     <img src="https://via.placeholder.com/50" alt="User avatar">
                     <div class="comment-content">
                         <h4>Robert Johnson <span>1 hour ago</span></h4>
@@ -146,7 +182,7 @@
                             <a href="#"><i class="far fa-thumbs-down"></i> 5</a>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </section>
 
             <section class="related-articles">
