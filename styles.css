@@ -369,3 +369,116 @@ transition: color 0.3s ease, transform 0.3s ease;
 color: var(--accent-color);
 transform: scale(1.2);
 }
+
+/* Category Page Style */
+.category-header {
+margin-bottom: 30px;
+padding-bottom: 20px;
+border-bottom: 1px solid var(--border-color);
+}
+.category-header h1 {
+font-size: 2.3rem;
+color: var(--primary-color);
+margin-bottom: 10px;
+}
+.category-description {
+font-size: 1.2rem;
+}
+.category-sorting {
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.category-sorting select {
+padding: 7px 14px;
+border-radius: 5px;
+border: 1px solid var(--border-color);
+font-size: 0.9rem;
+}
+.category-articles article {
+display: flex;
+gap: 25px;
+margin-bottom: 30px;
+padding-bottom: 30px;
+border-bottom: 1px solid var(--border-color);
+}
+.category-articles article img {
+width: 300px;
+height: 200px;
+object-fit: cover;
+border-radius: 5px;
+background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+flex-shrink: 0;
+}
+.article-content {
+flex: 1;
+}
+.article-category {
+display: inline-block;
+background-color: var(--secondary-color);
+color: white;
+padding: 5px 10px;
+border-radius: 5px;
+font-size: 0.9rem;
+margin-bottom: 10px;
+}
+.article-description {
+margin: 15px 0;
+line-height: 1.6;
+}
+.article-data {
+display: flex;
+gap: 20px;
+font-size: 0.9rem;
+color: #666;
+}
+.article-data i {
+margin-right: 5px;
+}
+.pagination {
+display: flex;
+gap: 10px;
+margin-top: 40px;
+justify-content: center;
+}
+.pagination a {
+display: inline-block;
+padding: 8px 15px;
+background-color: white;
+border: 1px solid var(--border-color);
+border-radius: 5px;
+text-decoration: none;
+color: var(--text-color);
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+.pagination a:focus {
+background-color: var(--secondary-color);
+color: white;
+border-color: var(--secondary-color);
+}
+/* Newsletter */
+.newsletter {
+background-color: #f0f7ff;
+padding: 20px;
+border-radius: 5px;
+margin-bottom: 30px;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 15px;
+}
+.newsletter p {
+font-size: 1rem;
+}
+.newsletter input {
+width: 100%;
+padding: 7px;
+border: 2px solid var(--border-color);
+color: var(--text-color);
+border-radius: 5px;
+}
+.newsletter input:focus {
+border-color: var(--secondary-color);
+outline: none;
+}
