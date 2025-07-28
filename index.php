@@ -2,18 +2,27 @@
 
 include 'config/db.php';
 
-// Fetch breaking news (LIMIT 2)
-$breaking_sql = "SELECT * FROM articles WHERE is_breaking = 1 ORDER BY published_date DESC LIMIT 2";
+// Fetch Breaking News (LIMIT 2)
+$breaking_sql = "SELECT * FROM articles 
+                WHERE is_breaking = 1 
+                ORDER BY published_date DESC 
+                LIMIT 2";
 $breaking_result = mysqli_query($connection, $breaking_sql);
 $breaking_news = mysqli_fetch_all($breaking_result, MYSQLI_ASSOC);
 
-// Fetch featured articles (LIMIT 3)
-$featured_sql = "SELECT * FROM articles WHERE is_breaking = 0 ORDER BY published_date DESC LIMIT 3";
+// Fetch Featured Articles (LIMIT 3)
+$featured_sql = "SELECT * FROM articles 
+                WHERE is_breaking = 0 
+                ORDER BY published_date DESC 
+                LIMIT 3";
 $featured_result = mysqli_query($connection, $featured_sql);
 $featured_articles = mysqli_fetch_all($featured_result, MYSQLI_ASSOC);
 
-// Fetch latest news articles (LIMIT 3 OFFSET 3)
-$latest_sql = "SELECT * FROM articles WHERE is_breaking = 0 ORDER BY published_date DESC LIMIT 3 OFFSET 3";
+// Fetch Latest News Articles (LIMIT 3 OFFSET 3)
+$latest_sql = "SELECT * FROM articles
+                WHERE is_breaking = 0 
+                ORDER BY published_date DESC 
+                LIMIT 3 OFFSET 3";
 $latest_result = mysqli_query($connection, $latest_sql);
 $latest_articles = mysqli_fetch_all($latest_result, MYSQLI_ASSOC);
 

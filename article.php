@@ -5,7 +5,7 @@ include 'config/db.php';
 if(isset($_GET['id'])) {
     $article_id = intval($_GET['id']);
 
-    // Fetch article details
+    // Fetch Article Details
     $article_sql = "SELECT a.*, u.username, c.category_name 
                     FROM articles a 
                     JOIN users u ON a.author_id = u.user_id 
@@ -17,14 +17,23 @@ if(isset($_GET['id'])) {
     die("Article ID not provided.");
 }
 
-// Fetch comments for the article
+// Fetch Comments for the Article
 $comments_sql = "SELECT c.*, u.username 
-                 FROM comments c 
-                 JOIN users u ON c.user_id = u.user_id 
-                 WHERE c.article_id = $article_id 
-                 ORDER BY c.timestamp DESC";
+                FROM comments c 
+                JOIN users u ON c.user_id = u.user_id 
+                WHERE c.article_id = $article_id 
+                ORDER BY c.timestamp DESC";
 $comments_result = mysqli_query($connection, $comments_sql);
 $comments = mysqli_fetch_all($comments_result, MYSQLI_ASSOC);
+
+// Fetch Related Articles
+$related_sql = "SELECT article_id , title, image_url FROM articles
+                WHERE category_id = {$article['category_id']}
+                AND article_id != $article_id
+                ORDER BY published_date DESC
+                LIMIT 3";
+$related_result = mysqli_query($connection, $related_sql);
+$related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
 
 ?>
 
@@ -154,6 +163,18 @@ $comments = mysqli_fetch_all($comments_result, MYSQLI_ASSOC);
                     <button>Post Comment</button>
                 </div>
 
+                <!-- <div class="comment">
+                    <img src="https://via.placeholder.com/50" alt="User avatar">
+                    <div class="comment-content">
+                        <h4>Robert Johnson <span>1 hour ago</span></h4>
+                        <p>All talk as usual. Where's the enforcement mechanism? These summits produce nice declarations but little real change.</p>
+                        <div class="comment-actions">
+                            <a href="#">Reply</a>
+                            <a href="#"><i class="far fa-thumbs-up"></i> 8</a>
+                            <a href="#"><i class="far fa-thumbs-down"></i> 5</a>
+                        </div>
+                    </div>
+                </div> -->
                 <?php foreach($comments as $comment): ?>
                     <div class="comment">
                         <img src="https://via.placeholder.com/50" alt="User avatar">
@@ -171,24 +192,12 @@ $comments = mysqli_fetch_all($comments_result, MYSQLI_ASSOC);
                     </div>
                 <?php endforeach; ?>
 
-                <!-- <div class="comment">
-                    <img src="https://via.placeholder.com/50" alt="User avatar">
-                    <div class="comment-content">
-                        <h4>Robert Johnson <span>1 hour ago</span></h4>
-                        <p>All talk as usual. Where's the enforcement mechanism? These summits produce nice declarations but little real change.</p>
-                        <div class="comment-actions">
-                            <a href="#">Reply</a>
-                            <a href="#"><i class="far fa-thumbs-up"></i> 8</a>
-                            <a href="#"><i class="far fa-thumbs-down"></i> 5</a>
-                        </div>
-                    </div>
-                </div> -->
             </section>
 
             <section class="related-articles">
                 <h2>Related Articles</h2>
                 <div class="grid">
-                    <article>
+                    <!-- <article>
                         <img src="https://via.placeholder.com/250" alt="Thumbnail">
                         <h3>New Climate Study Shows Accelerated Warming</h3>
                     </article>
@@ -199,7 +208,14 @@ $comments = mysqli_fetch_all($comments_result, MYSQLI_ASSOC);
                     <article>
                         <img src="https://via.placeholder.com/250" alt="Thumbnail">
                         <h3>Youth Climate Activists Plan Global Strike</h3>
-                    </article>
+                    </article> -->
+
+                    <?php foreach($related_articles as $related) :?>
+                        <article>
+                            <img src="<?php echo htmlspecialchars($related['image_url']); ?>" alt="">
+                            <h3><?php echo htmlspecialchars($related['title']); ?></h3>
+                        </article>
+                    <?php endforeach; ?>
                 </div>
             </section>
         </main>
