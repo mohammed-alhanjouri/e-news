@@ -2,13 +2,18 @@
 
 include 'config/db.php';
 
+// Fetch breaking news (LIMIT 2)
+$breaking_sql = "SELECT * FROM articles WHERE is_breaking = 1 ORDER BY published_date DESC LIMIT 2";
+$breaking_result = mysqli_query($connection, $breaking_sql);
+$breaking_news = mysqli_fetch_all($breaking_result, MYSQLI_ASSOC);
+
 // Fetch featured articles (LIMIT 3)
-$featured_sql = "SELECT * FROM articles ORDER BY published_date DESC LIMIT 3";
+$featured_sql = "SELECT * FROM articles WHERE is_breaking = 0 ORDER BY published_date DESC LIMIT 3";
 $featured_result = mysqli_query($connection, $featured_sql);
 $featured_articles = mysqli_fetch_all($featured_result, MYSQLI_ASSOC);
 
 // Fetch latest news articles (LIMIT 3)
-$latest_sql = "SELECT * FROM articles ORDER BY published_date DESC LIMIT 3";
+$latest_sql = "SELECT * FROM articles WHERE is_breaking = 0 ORDER BY published_date DESC LIMIT 3 OFFSET 3";
 $latest_result = mysqli_query($connection, $latest_sql);
 $latest_articles = mysqli_fetch_all($latest_result, MYSQLI_ASSOC);
 
@@ -72,10 +77,17 @@ $latest_articles = mysqli_fetch_all($latest_result, MYSQLI_ASSOC);
                     <h3>Example of Breaking News</h3>
                     <p>This is a brief description of the breaking news event.</p>
                 </article>
-                <article>
+                <!-- <article>
                     <h3>Technology Breakthrough Announced</h3>
                     <p>Scientists unveil revolutionary renewable energy storage system that could transform global energy infrastructure.</p>
-                </article>
+                </article> -->
+                <?php foreach ($breaking_news as $article): ?>
+                    <article>
+                        <h3><a href="article.php?id=<?php echo $article['article_id'] ?>"><?php echo htmlspecialchars($article['title']) ?></a></h3>
+                        <p><?php echo substr(strip_tags($article['content']), 0, 100) ?>...</p>
+                    </article>
+                <?php endforeach; ?>
+
             </section>
 
             <section class="section featured-articles">
