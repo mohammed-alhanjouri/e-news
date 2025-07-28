@@ -1,3 +1,20 @@
+<?php
+
+include 'config/db.php';
+
+// Fetch featured articles (LIMIT 3)
+$featured_sql = "SELECT * FROM articles ORDER BY published_date DESC LIMIT 3";
+$featured_result = mysqli_query($connection, $featured_sql);
+$featured_articles = mysqli_fetch_all($featured_result, MYSQLI_ASSOC);
+
+// Fetch latest news articles (LIMIT 3)
+$latest_sql = "SELECT * FROM articles ORDER BY published_date DESC LIMIT 3";
+$latest_result = mysqli_query($connection, $latest_sql);
+$latest_articles = mysqli_fetch_all($latest_result, MYSQLI_ASSOC);
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +81,7 @@
             <section class="section featured-articles">
                 <h2>Featured Articles</h2>
                 <div class="grid">
-                    <article>
+                    <!-- <article>
                         <img src="https://via.placeholder.com/250" alt="Thumbnail">
                         <h3>Article Title 1</h3>
                     </article>
@@ -75,14 +92,21 @@
                     <article>
                         <img src="https://via.placeholder.com/250" alt="Thumbnail">
                         <h3>Sports Championship Delivers Record Viewership</h3>
-                    </article>
+                    </article> -->
+
+                    <?php foreach ($featured_articles as $article): ?>
+                        <article>
+                            <img src="<?php echo htmlspecialchars($article['image_url']) ?>" alt="Thumbnail">
+                            <h3><a href="article.php?id=<?php echo $article['article_id'] ?>"><?php echo htmlspecialchars($article['title']) ?></a></h3>
+                        </article>
+                    <?php endforeach; ?>
                     
                 </div>
             </section>
 
             <section class="section latest-news">
                 <h2>Latest News</h2>
-                <article>
+                <!-- <article>
                     <img src="https://via.placeholder.com/250" alt="Thumbnail">
                     <div>
                         <h3>Latest News Headline 1</h3>
@@ -104,7 +128,17 @@
                         <h3>Educational Programs Expand Globally</h3>
                         <p>Initiative to improve access to quality education reaches milestone with partnerships in developing regions.</p>
                     </div>
-                </article>
+                </article> -->
+                
+                <?php foreach ($latest_articles as $article): ?>
+                    <article>
+                        <img src="<?php echo htmlspecialchars($article['image_url']) ?>" alt="Thumbnail">
+                        <div>
+                            <h3><a href="article.php?id=<?php echo $article['article_id'] ?>"><?php echo htmlspecialchars($article['title']) ?></a></h3>
+                            <p><?php echo substr(strip_tags($article['content']), 0, 100) ?>...</p>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
                 
             </section>
 
