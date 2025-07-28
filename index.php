@@ -37,9 +37,9 @@ $latest_articles = mysqli_fetch_all($latest_result, MYSQLI_ASSOC);
 
         <nav class="header-nav">
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li>
-                    <a href="category.html">Category</a>
+                    <a href="category.php">Category</a>
                     <ul>
                         <li><a href="#">Politics</a></li>
                         <li><a href="#">Technology</a></li>
