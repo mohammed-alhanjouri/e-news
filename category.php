@@ -17,13 +17,29 @@ if(isset($_GET['id'])){
     die("Category ID not provided.");
 }
 
+// Pagination 
+$articles_per_page = 3; // Number of articles to display per page
+if (isset($_GET['page'])) { 
+    $current_page = intval($_GET['page']);
+} else {
+    $current_page = 1;
+}
+// Count total number of articles in the category
+$offset = ($current_page - 1) * $articles_per_page; // Skips articles already displayed
+$total_articles_sql = "SELECT COUNT(*) AS total FROM articles WHERE category_id = $category_id";
+$total_articles_result = mysqli_query($connection, $total_articles_sql);
+$total_articles = mysqli_fetch_assoc($total_articles_result)['total'];
+$total_pages = ceil($total_articles / $articles_per_page); // Rounds up to ensure having enough pages to display all articles
+
+
 // Fetch Articles in the Category 
 $category_articles_sql = "SELECT a.*, u.username, 
                             (SELECT COUNT(*) FROM comments c WHERE c.article_id = a.article_id) AS comment_count
                            FROM articles a 
                            JOIN users u ON a.author_id = u.user_id 
                            WHERE a.category_id = $category_id 
-                           ORDER BY a.published_date DESC";
+                           ORDER BY a.published_date DESC
+                           LIMIT $articles_per_page OFFSET $offset";
 $category_articles_result = mysqli_query($connection, $category_articles_sql);
 $category_articles = mysqli_fetch_all($category_articles_result, MYSQLI_ASSOC);
 
@@ -114,10 +130,23 @@ $category_articles = mysqli_fetch_all($category_articles_result, MYSQLI_ASSOC);
                 <?php endforeach; ?>
 
                 <div class="pagination">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#"><i class="fas fa-chevron-right"></i></a>
+                    <?php if ($current_page > 1): ?>
+                        <a href="category.php?id=<?php echo $category_id; ?>&page=<?php echo $current_page - 1; ?>">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php for ($page = 1; $page <= $total_pages; $page++): ?>
+                        <a href="category.php?id=<?php echo $category_id; ?>&page=<?php echo $page; ?>" class="<?php echo ($page == $current_page) ? 'active' : ''; ?>">
+                            <?php echo $page; ?>
+                        </a>
+                    <?php endfor; ?>
+
+                    <?php if ($current_page < $total_pages): ?>
+                        <a href="category.php?id=<?php echo $category_id; ?>&page=<?php echo $current_page + 1; ?>">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </section>
         </main>
