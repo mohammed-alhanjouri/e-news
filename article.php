@@ -2,6 +2,10 @@
 
 include 'config/db.php';
 
+// Fetch all categories from DB
+$categories_result = mysqli_query($connection, "SELECT * FROM categories ORDER BY category_id ASC");
+$categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
+
 if(isset($_GET['id'])) {
     $article_id = intval($_GET['id']);
 
@@ -64,10 +68,13 @@ $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
                 <li>
                     <a href="category.php">Category</a>
                     <ul>
-                        <li><a href="#">Politics</a></li>
-                        <li><a href="#">Technology</a></li>
-                        <li><a href="#">Sports</a></li>
-                        <li><a href="#">Entertainment</a></li>
+                        <?php foreach ($categories as $category): ?>
+                        <li>
+                            <a href="category.php?id=<?php echo $category['category_id']; ?>">
+                                <?php echo htmlspecialchars($category['category_name']); ?>
+                            </a>
+                        </li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
                 <li><a href="#">About Us</a></li>
