@@ -129,22 +129,12 @@ $latest_articles = mysqli_fetch_all($latest_result, MYSQLI_ASSOC);
             <section class="section category-wise-news">
                 <h2>Category-wise News</h2>
                 <div class="category-grid">
-                    <article>
-                        <h3>Politics</h3>
-                        <p>Latest developments in domestic and international political affairs, policy changes, and government initiatives.</p>
-                    </article>
-                    <article>
-                        <h3>Technology</h3>
-                        <p>Breaking news in tech innovation, digital transformation, and emerging technologies shaping our future.</p>
-                    </article>
-                    <article>
-                        <h3>Sports</h3>
-                        <p>Comprehensive coverage of sporting events, athlete achievements, and major tournament results.</p>
-                    </article>
-                    <article>
-                        <h3>Entertainment</h3>
-                        <p>Latest updates from the entertainment industry, including movies, music, and celebrity news.</p>
-                    </article>
+                    <?php foreach($categories as $category): ?>
+                        <article>
+                            <h3><?php echo htmlspecialchars($category['category_name']); ?></h3>
+                            <p><?php echo htmlspecialchars($category['category_description']); ?></p>
+                        </article>
+                    <?php endforeach;?>
                 </div>
             </section>
         </main>
