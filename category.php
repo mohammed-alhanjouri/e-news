@@ -1,9 +1,40 @@
+<?php 
+
+include 'config/db.php';
+
+// Fetch all categories from DB
+$categories_result = mysqli_query($connection, "SELECT * FROM categories ORDER BY category_id ASC");
+$categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
+
+if(isset($_GET['id'])){
+    $category_id = intval($_GET['id']);
+
+    // Fetch Category Details 
+    $category_sql = "SELECT * FROM categories WHERE category_id = $category_id";
+    $category_result = mysqli_query($connection, $category_sql);
+    $category_details = mysqli_fetch_assoc($category_result);
+} else {
+    die("Category ID not provided.");
+}
+
+// Fetch Articles in the Category 
+$category_articles_sql = "SELECT a.*, u.username 
+                           FROM articles a 
+                           JOIN users u ON a.author_id = u.user_id 
+                           WHERE a.category_id = $category_id 
+                           ORDER BY a.published_date DESC";
+$category_articles_result = mysqli_query($connection, $category_articles_sql);
+$category_articles = mysqli_fetch_all($category_articles_result, MYSQLI_ASSOC);
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Truth News</title>
+    <title> <?php echo htmlspecialchars($category_details['category_name']); ?> | Truth News</title>
     <link rel="icon" href="truth-news.png" sizes="48x48" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
@@ -23,10 +54,13 @@
                 <li>
                     <a href="category.php">Category</a>
                     <ul>
-                        <li><a href="#">Politics</a></li>
-                        <li><a href="#">Technology</a></li>
-                        <li><a href="#">Sports</a></li>
-                        <li><a href="#">Entertainment</a></li>
+                        <?php foreach ($categories as $category): ?>
+                        <li>
+                            <a href="category.php?id=<?php echo $category['category_id']; ?>">
+                                <?php echo htmlspecialchars($category['category_name']); ?>
+                            </a>
+                        </li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
                 <li><a href="#">About Us</a></li>
@@ -48,8 +82,8 @@
     <div class="layout-container">
         <main>
             <div class="category-header">
-                <h1>Politics</h1>
-                <p class="category-description">Latest developments in domestic and international political affairs, policy changes, and government initiatives.</p>
+                <h1><?php echo htmlspecialchars($category_details['category_name']); ?></h1>
+                <p class="category-description"><?php echo htmlspecialchars($category_details['category_description']); ?></p>
             </div>
 
             <div class="category-sorting">
@@ -62,47 +96,21 @@
             </div>
 
             <section class="category-articles">
-                <article>
-                    <img src="https://via.placeholder.com/300x200" alt="Article thumbnail">
-                    <div class="article-content">
-                        <span class="article-category">Politics</span>
-                        <h2><a href="article.html">Global Leaders Gather for Climate Summit</a></h2>
-                        <p class="article-description">World leaders convened in Paris to discuss new climate initiatives and set ambitious targets for carbon reduction by 2030.</p>
-                        <div class="article-data">
-                            <span><i class="far fa-user"></i> By John Smith</span>
-                            <span><i class="far fa-clock"></i> 3 hours ago</span>
-                            <span><i class="far fa-comment"></i> 24 comments</span>
+                <?php foreach ($category_articles as $article): ?>
+                    <article>
+                        <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Thumbnail">
+                        <div class="article-content">
+                            <span class="article-category"><?php echo htmlspecialchars($category_details['category_name']); ?></span>
+                            <h2><a href="article.php?id=<?php echo $article['article_id']; ?>"><?php echo htmlspecialchars($article['title']); ?></a></h2>
+                            <p class="article-description"><?php echo htmlspecialchars(substr(strip_tags($article['content']), 0, 150)) . '...'; ?></p>
+                            <div class="article-data">
+                                <span><i class="far fa-user"></i> By <?php echo htmlspecialchars($article['username']); ?></span>
+                                <span><i class="far fa-clock"></i> <?php echo date('F j, Y', strtotime($article['published_date'])); ?></span>
+                                <span><i class="far fa-comment"></i> comments</span>
+                            </div>
                         </div>
-                    </div>
-                </article>
-
-                <article>
-                    <img src="https://via.placeholder.com/300x200" alt="Article thumbnail">
-                    <div class="article-content">
-                        <span class="article-category">Politics</span>
-                        <h2><a href="article.html">New Legislation Proposed for Tech Regulation</a></h2>
-                        <p class="article-description">A bipartisan group of senators introduced a bill that would impose new regulations on large technology companies to promote competition.</p>
-                        <div class="article-data">
-                            <span><i class="far fa-user"></i> By Sarah Johnson</span>
-                            <span><i class="far fa-clock"></i> 1 day ago</span>
-                            <span><i class="far fa-comment"></i> 42 comments</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article>
-                    <img src="https://via.placeholder.com/300x200" alt="Article thumbnail">
-                    <div class="article-content">
-                        <span class="article-category">Politics</span>
-                        <h2><a href="article.html">Election Polls Show Tight Race in Key States</a></h2>
-                        <p class="article-description">Latest polling data reveals a dead heat between candidates in several battleground states as election day approaches.</p>
-                        <div class="article-data">
-                            <span><i class="far fa-user"></i> By Michael Chen</span>
-                            <span><i class="far fa-clock"></i> 2 days ago</span>
-                            <span><i class="far fa-comment"></i> 18 comments</span>
-                        </div>
-                    </div>
-                </article>
+                    </article>
+                <?php endforeach; ?>
 
                 <div class="pagination">
                     <a href="#">1</a>
@@ -114,13 +122,19 @@
         </main>
 
         <aside class="sidebar">
-            <h3>Related Categories</h3>
+            <h3>Browse Other Categories</h3>
             <ul class="related-categories">
-                <li><a href="category.html?cat=policy">Policy & Governance</a></li>
-                <li><a href="category.html?cat=international">International Relations</a></li>
-                <li><a href="category.html?cat=economy">Political Economy</a></li>
-                <li><a href="category.html?cat=history">Political History</a></li>
+                <?php foreach ($categories as $related): ?>
+                    <?php if ($related['category_id'] != $category_id): ?>
+                        <li>
+                            <a href="category.php?id=<?php echo $related['category_id']; ?>">
+                                <?php echo htmlspecialchars($related['category_name']); ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </ul>
+
 
             <div class="newsletter">
                 <h3>Newsletter</h3>
