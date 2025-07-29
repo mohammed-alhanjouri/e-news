@@ -511,11 +511,18 @@ footer h3{
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
-.pagination a:focus {
+.pagination a:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+.pagination a.active {
     background-color: var(--secondary-color);
     color: white;
     border-color: var(--secondary-color);
+}
+.pagination a.active:hover {
+    background-color: var(--button-hover);
+    border-color: var(--button-hover);
 }
 
 /* Newsletter */
