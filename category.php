@@ -18,7 +18,8 @@ if(isset($_GET['id'])){
 }
 
 // Fetch Articles in the Category 
-$category_articles_sql = "SELECT a.*, u.username 
+$category_articles_sql = "SELECT a.*, u.username, 
+                            (SELECT COUNT(*) FROM comments c WHERE c.article_id = a.article_id) AS comment_count
                            FROM articles a 
                            JOIN users u ON a.author_id = u.user_id 
                            WHERE a.category_id = $category_id 
@@ -106,7 +107,7 @@ $category_articles = mysqli_fetch_all($category_articles_result, MYSQLI_ASSOC);
                             <div class="article-data">
                                 <span><i class="far fa-user"></i> By <?php echo htmlspecialchars($article['username']); ?></span>
                                 <span><i class="far fa-clock"></i> <?php echo date('F j, Y', strtotime($article['published_date'])); ?></span>
-                                <span><i class="far fa-comment"></i> comments</span>
+                                <span><i class="far fa-comment"></i><?php echo $article['comment_count']; ?> comments</span>
                             </div>
                         </div>
                     </article>
