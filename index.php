@@ -73,10 +73,15 @@ $latest_articles = mysqli_fetch_all($latest_result, MYSQLI_ASSOC);
             </ul>
         </nav>
 
-        <div class="search-bar">
+        <!-- <div class="search-bar">
             <input type="text" placeholder="Search articles..."/>
             <button><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
+        </div> -->
+        <form action="search.php" method="GET" class="search-bar">
+            <input type="text" name="query" placeholder="Search articles..." required>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+
 
         <div class="auth-buttons">
             <button>Login</button>
