@@ -39,196 +39,119 @@ $related_sql = "SELECT article_id , title, image_url FROM articles
 $related_result = mysqli_query($connection, $related_sql);
 $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
 
+
 ?>
 
+<?php include 'includes/header.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> <?php echo htmlspecialchars($article['title']); ?>| Truth News</title>
-    <link rel="icon" href="truth-news.png" sizes="48x48" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+<div class="layout-container">
+    <main>
+        <article class="single-article">
+            <span class="article-category"><?php echo htmlspecialchars($article['category_name']); ?></span>
+            <h1 class="article-title"><?php echo htmlspecialchars($article['title']); ?></h1>
 
-    <header>
+            <div class="article-data">
+                <span><i class="far fa-user"></i> By <?php echo htmlspecialchars($article['username']); ?></span>
+                <span><i class="far fa-clock"></i> Published <?php echo date('F j, Y', strtotime($article['published_date'])); ?></span>
+                <span><i class="far fa-comment"></i> <?php echo count($comments) ?> comments</span>
+                <span><i class="fas fa-share-alt"></i> Share</span>
+            </div>
 
-        <div class="logo">
-            <img src="truth-news.png" alt="Truth News">
-            <h1>Truth News</h1>
-        </div>
+            <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="<?php echo htmlspecialchars($article['title']); ?>" class="article-featured-image">
 
-        <nav class="header-nav">
-            <ul>
-                <li><a href="index.php">Home</a></li>
-                <li>
-                    <a href="category.php">Category</a>
-                    <ul>
-                        <?php foreach ($categories as $category): ?>
-                        <li>
-                            <a href="category.php?id=<?php echo $category['category_id']; ?>">
-                                <?php echo htmlspecialchars($category['category_name']); ?>
-                            </a>
-                        </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
+            <div class="article-content">
+                <?php echo htmlspecialchars($article['content']); ?>
+            </div>
 
-        <div class="search-bar">
-            <input type="text" placeholder="Search articles..."/>
-            <button><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
-
-        <div class="auth-buttons">
-            <button>Login</button>
-            <button>Sign Up</button>
-        </div>
-    </header>
-
-    <div class="layout-container">
-        <main>
-            <article class="single-article">
-                <span class="article-category"><?php echo htmlspecialchars($article['category_name']); ?></span>
-                <h1 class="article-title"><?php echo htmlspecialchars($article['title']); ?></h1>
-
-                <div class="article-data">
-                    <span><i class="far fa-user"></i> By <?php echo htmlspecialchars($article['username']); ?></span>
-                    <span><i class="far fa-clock"></i> Published <?php echo date('F j, Y', strtotime($article['published_date'])); ?></span>
-                    <span><i class="far fa-comment"></i> <?php echo count($comments) ?> comments</span>
-                    <span><i class="fas fa-share-alt"></i> Share</span>
+            <div class="article-actions">
+                <div class="article-rating">
+                    <span>Rate this article:</span>
+                    <div class="stars">
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                    </div>
                 </div>
-
-                <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="<?php echo htmlspecialchars($article['title']); ?>" class="article-featured-image">
-
-                <div class="article-content">
-                    <?php echo htmlspecialchars($article['content']); ?>
+                <div class="share-buttons">
+                    <button><i class="fa-brands fa-facebook-f"></i> Share</button>
+                    <button><i class="fa-brands fa-x-twitter"></i> Tweet</button>
+                    <button><i class="fa-brands fa-linkedin-in"></i> Share</button>
                 </div>
+            </div>
+        </article>
 
-                <div class="article-actions">
-                    <div class="article-rating">
-                        <span>Rate this article:</span>
-                        <div class="stars">
-                            <i class="fa-regular fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
+        <section class="article-comments">
+            <h2>Comments (<?php echo count($comments); ?>)</h2>
+            <div class="comment-form">
+                <h3>Leave a Comment</h3>
+                <textarea placeholder="Share your thoughts..."></textarea>
+                <button>Post Comment</button>
+            </div>
+
+            <?php foreach($comments as $comment): ?>
+                <div class="comment">
+                    <img src="https://via.placeholder.com/50" alt="User avatar">
+                    <div class="comment-content">
+                        <h4><?php echo htmlspecialchars($comment['username']); ?>
+                            <span><?php echo htmlspecialchars($comment['timestamp']); ?></span>
+                        </h4>
+                        <p><?php echo htmlspecialchars($comment['comment_text']) ?></p>
+                        <div class="comment-actions">
+                            <a href="#">Reply</a>
+                            <a href="#"><i class="far fa-thumbs-up"></i> 12</a>
+                            <a href="#"><i class="far fa-thumbs-down"></i> 2</a>
                         </div>
                     </div>
-                    <div class="share-buttons">
-                        <button><i class="fa-brands fa-facebook-f"></i> Share</button>
-                        <button><i class="fa-brands fa-x-twitter"></i> Tweet</button>
-                        <button><i class="fa-brands fa-linkedin-in"></i> Share</button>
-                    </div>
                 </div>
-            </article>
+            <?php endforeach; ?>
 
-            <section class="article-comments">
-                <h2>Comments (<?php echo count($comments); ?>)</h2>
-                <div class="comment-form">
-                    <h3>Leave a Comment</h3>
-                    <textarea placeholder="Share your thoughts..."></textarea>
-                    <button>Post Comment</button>
-                </div>
+        </section>
 
-                <?php foreach($comments as $comment): ?>
-                    <div class="comment">
-                        <img src="https://via.placeholder.com/50" alt="User avatar">
-                        <div class="comment-content">
-                            <h4><?php echo htmlspecialchars($comment['username']); ?>
-                                <span><?php echo htmlspecialchars($comment['timestamp']); ?></span>
-                            </h4>
-                            <p><?php echo htmlspecialchars($comment['comment_text']) ?></p>
-                            <div class="comment-actions">
-                                <a href="#">Reply</a>
-                                <a href="#"><i class="far fa-thumbs-up"></i> 12</a>
-                                <a href="#"><i class="far fa-thumbs-down"></i> 2</a>
-                            </div>
-                        </div>
-                    </div>
+        <section class="related-articles">
+            <h2>Related Articles</h2>
+            <div class="grid">
+
+                <?php foreach($related_articles as $related) :?>
+                    <article>
+                        <img src="<?php echo htmlspecialchars($related['image_url']); ?>" alt="">
+                        <h3><a href="article.php?id=<?php echo $related['article_id']; ?>">
+                            <?php echo htmlspecialchars($related['title']); ?>
+                        </a></h3>
+                    </article>
                 <?php endforeach; ?>
-
-            </section>
-
-            <section class="related-articles">
-                <h2>Related Articles</h2>
-                <div class="grid">
-
-                    <?php foreach($related_articles as $related) :?>
-                        <article>
-                            <img src="<?php echo htmlspecialchars($related['image_url']); ?>" alt="">
-                            <h3><a href="article.php?id=<?php echo $related['article_id']; ?>">
-                                <?php echo htmlspecialchars($related['title']); ?>
-                            </a></h3>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
-
-            </section>
-        </main>
-
-        <aside class="sidebar">
-            <h3>About the Author</h3>
-            <div class="author-bio">
-                <img src="https://via.placeholder.com/100" alt="Author">
-                <h4>Author Name</h4>
-                <p>Author Bio</p>
-                <div class="author-social">
-                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                </div>
             </div>
 
-            <h3>Trending in <?php echo htmlspecialchars($article['category_name']); ?></h3>
-            <ul>
-                <li><a href="#">Election Polls Show Tight Race</a></li>
-                <li><a href="#">New Legislation on Tech Regulation</a></li>
-                <li><a href="#">Supreme Court to Hear Key Case</a></li>
-                <li><a href="#">Diplomatic Tensions Rise</a></li>
-            </ul>
+        </section>
+    </main>
 
-            <div class="ad">
-                <p><strong>Advertisement</strong><br>
-                Premium content space available<br>
-                Contact us for rates</p>
-            </div>
-        </aside>
-    </div>
-    
-    <footer>
-        <div class="footer-about">
-            <h2>Truth News</h2>
-            <p>Your trusted source for reliable and timely news coverage around the world.</p>
-            <p>&copy; 2025 Truth News. All rights reserved.</p>
-        </div>
-
-        <div class="footer-links">
-            <h3>Quick Links</h3>
-            <ul>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-social">
-            <h3>Follow Us</h3>
-            <div class="social-icons">
-                <a href="https://www.facebook.com/mohammed.alhanjouri" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/mohammed.alhanjouri" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://x.com/MohammedHanj" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://www.linkedin.com/in/mohammed-alhanjouri" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+    <aside class="sidebar">
+        <h3>About the Author</h3>
+        <div class="author-bio">
+            <img src="https://via.placeholder.com/100" alt="Author">
+            <h4>Author Name</h4>
+            <p>Author Bio</p>
+            <div class="author-social">
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
             </div>
         </div>
-    </footer>
 
-</body>
-</html>
+        <h3>Trending in <?php echo htmlspecialchars($article['category_name']); ?></h3>
+        <ul>
+            <li><a href="#">Election Polls Show Tight Race</a></li>
+            <li><a href="#">New Legislation on Tech Regulation</a></li>
+            <li><a href="#">Supreme Court to Hear Key Case</a></li>
+            <li><a href="#">Diplomatic Tensions Rise</a></li>
+        </ul>
+
+        <div class="ad">
+            <p><strong>Advertisement</strong><br>
+            Premium content space available<br>
+            Contact us for rates</p>
+        </div>
+    </aside>
+</div>
+
+<?php include 'includes/footer.php'; ?>
