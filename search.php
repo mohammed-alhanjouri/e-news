@@ -18,7 +18,8 @@ function searchArticles($keyword) {
     // Escapes special characters in a string for use in an SQL statement
     $keyword = mysqli_real_escape_string($connection, $keyword);
 
-    $search_sql = "SELECT a.*, u.username
+    $search_sql = "SELECT a.*, u.username,
+                        (SELECT COUNT(*) FROM comments c WHERE c.article_id = a.article_id) AS comment_count
                     FROM articles a
                     JOIN users u ON a.author_id = u.user_id
                     WHERE a.title LIKE '%$keyword%'
@@ -37,9 +38,53 @@ function searchArticles($keyword) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results | Truth News</title>
+    <link rel="icon" href="truth-news.png" sizes="48x48" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Search Results</h1>
+
+    <header>
+
+        <div class="logo">
+            <img src="truth-news.png" alt="Truth News">
+            <h1>Truth News</h1>
+        </div>
+
+        <nav class="header-nav">
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li>
+                    <a href="category.php">Category</a>
+                    <ul>
+                        <?php foreach ($categories as $category): ?>
+                        <li>
+                            <a href="category.php?id=<?php echo $category['category_id']; ?>">
+                                <?php echo htmlspecialchars($category['category_name']); ?>
+                            </a>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+        <form action="search.php" method="GET" class="search-bar">
+            <input type="text" name="query" placeholder="Search articles..." required>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+
+
+        <div class="auth-buttons">
+            <button>Login</button>
+            <button>Sign Up</button>
+        </div>
+    </header>
+
+    <!-- <h1>Search Results</h1>
     <?php if (!empty($search_results)): ?>
         <ul>
             <?php foreach ($search_results as $article): ?>
@@ -52,6 +97,69 @@ function searchArticles($keyword) {
         </ul>
     <?php else: ?>
         <p>No results found.</p>
-    <?php endif; ?>
+    <?php endif; ?> -->
+
+    <div class="layout-container">
+        <main>
+            <h1>Search Results for: "<?php echo htmlspecialchars($search_query); ?>"</h1>
+
+            <?php if (!empty($search_query)): ?>
+                <?php if (count($search_results) > 0): ?>
+                    <?php foreach ($search_results as $article): ?>
+                        <article>
+                            <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Thumbnail">
+                            <div class="article-content">
+                                <span class="article-category">Search Match</span>
+                                <h2><a href="article.php?id=<?php echo $article['article_id']; ?>">
+                                    <?php echo htmlspecialchars($article['title']); ?>
+                                </a></h2>
+                                <p class="article-description">
+                                    <?php echo htmlspecialchars(substr(strip_tags($article['content']), 0, 150)) . '...'; ?>
+                                </p>
+                                <div class="article-data">
+                                    <span><i class="far fa-user"></i> By <?php echo htmlspecialchars($article['username']); ?></span>
+                                    <span><i class="far fa-clock"></i> <?php echo date('F j, Y', strtotime($article['published_date'])); ?></span>
+                                    <span><i class="far fa-comment"></i> <?php echo $article['comment_count']; ?> comments</span>
+                                </div>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No results found for "<?php echo htmlspecialchars($search_query); ?>"</p>
+                <?php endif; ?>
+            <?php else: ?>
+                <p>Please enter a search term.</p>
+            <?php endif; ?>
+            
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-about">
+            <h2>Truth News</h2>
+            <p>Your trusted source for reliable and timely news coverage around the world.</p>
+            <p>&copy; 2025 Truth News. All rights reserved.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-social">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/mohammed.alhanjouri" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/mohammed.alhanjouri" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com/MohammedHanj" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.linkedin.com/in/mohammed-alhanjouri" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
