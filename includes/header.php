@@ -1,3 +1,9 @@
+<?php 
+// Fetch all categories from DB
+$categories_result = mysqli_query($connection, "SELECT * FROM categories ORDER BY category_id ASC");
+$categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
