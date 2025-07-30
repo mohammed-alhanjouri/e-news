@@ -30,3 +30,28 @@ function searchArticles($keyword) {
 
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results | Truth News</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <?php if (!empty($search_results)): ?>
+        <ul>
+            <?php foreach ($search_results as $article): ?>
+                <li>
+                    <h2><?php echo htmlspecialchars($article['title']); ?></h2>
+                    <p><?php echo htmlspecialchars($article['content']); ?></p>
+                    <p>Author: <?php echo htmlspecialchars($article['username']); ?></p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>No results found.</p>
+    <?php endif; ?>
+</body>
+</html>
