@@ -11,8 +11,21 @@ if (!empty($search_query)) {
     $search_results = searchArticles($search_query);
 }
 
-function searchArticles($query) {
+function searchArticles($keyword) {
     // This function should connect to the database and fetch articles matching the query
+    global $connection;
+
+    // Escapes special characters in a string for use in an SQL statement
+    $keyword = mysqli_real_escape_string($connection, $keyword);
+
+    $search_sql = "SELECT a.*, u.username
+                    FROM articles a
+                    JOIN users u ON a.author_id = u.user_id
+                    WHERE a.title LIKE '%$keyword%'
+                    OR a.content LIKE '%$keyword%'
+                    ORDER BY a.published_date DESC";
+    $search_result = mysqli_query($connection, $search_sql);
+    return mysqli_fetch_all($search_result, MYSQLI_ASSOC);
 }
 
 
