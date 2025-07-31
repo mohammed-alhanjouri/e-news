@@ -61,7 +61,7 @@ function searchArticles($keyword, $limit, $offset) {
             <?php if (count($search_results) > 0): ?>
                 <?php foreach ($search_results as $article): ?>
                     <article>
-                        <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Thumbnail">
+                        <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Thumbnail" style="object-fit: cover; width: 40%; height: 200px;">
                         <div class="article-content">
                             <span class="article-category"><?php echo htmlspecialchars($article['category_name']); ?></span>
                             <h2><a href="article.php?id=<?php echo $article['article_id']; ?>">

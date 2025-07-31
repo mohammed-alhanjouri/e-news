@@ -39,6 +39,16 @@ p,a {
     color: var(--text-color);
 }
 
+h2 a , h3 a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    transition: color 0.3s ease;
+}
+h2 a:hover , h3 a:hover {
+    color: var(--secondary-color);
+}
+
 button {
     padding: 8px 16px;
     background-color: var(--secondary-color);
@@ -238,7 +248,12 @@ header{
 .featured-articles article h3 {
     padding: 20px;
     text-align: center;
+}
+.featured-articles article h3 a{
     color: var(--text-color);
+}
+.featured-articles article h3 a:hover {
+    color: var(--secondary-color);
 }
 
 /* Latest News Styling */
@@ -753,7 +768,10 @@ footer h3{
 }
 .related-articles article h3 {
     padding: 15px;
-    font-size: 1.1rem;
+    text-align: center;
+}
+.related-articles article h3 a {
+    font-size: 1.2rem;
 }
 
 /* Author Bio */
