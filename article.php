@@ -35,7 +35,36 @@ $related_sql = "SELECT article_id , title, image_url FROM articles
 $related_result = mysqli_query($connection, $related_sql);
 $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
 
+// Set timezone for time_ago function
+date_default_timezone_set('Asia/Gaza');
 
+// Function to format time ago
+function time_ago($timestamp) {
+    $current_time = time();
+    $time_diff = $current_time - strtotime($timestamp);
+    
+    if ($time_diff < 60) {
+        return 'just now';
+    } elseif ($time_diff < 3600) {
+        $minutes = floor($time_diff / 60);
+        return $minutes . ' min' . ($minutes == 1 ? '' : 's') . ' ago';
+    } elseif ($time_diff < 86400) {
+        $hours = floor($time_diff / 3600);
+        return $hours . ' hr' . ($hours == 1 ? '' : 's') . ' ago';
+    } elseif ($time_diff < 604800) {
+        $days = floor($time_diff / 86400);
+        return $days . ' day' . ($days == 1 ? '' : 's') . ' ago';
+    } elseif ($time_diff < 2592000) {
+        $weeks = floor($time_diff / 604800);
+        return $weeks . ' week' . ($weeks == 1 ? '' : 's') . ' ago';
+    } elseif ($time_diff < 31536000) {
+        $months = floor($time_diff / 2592000);
+        return $months . ' month' . ($months == 1 ? '' : 's') . ' ago';
+    } else {
+        $years = floor($time_diff / 31536000);
+        return $years . ' year' . ($years == 1 ? '' : 's') . ' ago';
+    }
+}
 ?>
 
 <?php include 'includes/header.php'; ?>
@@ -91,7 +120,7 @@ $related_articles = mysqli_fetch_all($related_result, MYSQLI_ASSOC);
                     <img src="https://via.placeholder.com/50" alt="User avatar">
                     <div class="comment-content">
                         <h4><?php echo htmlspecialchars($comment['username']); ?>
-                            <span><?php echo htmlspecialchars($comment['timestamp']); ?></span>
+                            <span><?php echo time_ago($comment['timestamp']); ?></span>
                         </h4>
                         <p><?php echo htmlspecialchars($comment['comment_text']) ?></p>
                         <div class="comment-actions">
