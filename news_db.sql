@@ -103,7 +103,8 @@ INSERT INTO articles (
         is_breaking,
         image_url,
         category_id,
-        author_id
+        author_id,
+        published_date
     )
 VALUES (
         'Breaking: New Government Policy Announced',
