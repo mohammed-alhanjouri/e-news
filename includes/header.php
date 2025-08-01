@@ -10,7 +10,7 @@ $categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Truth News</title>
-    <link rel="icon" href="assets/truth-news.png" sizes="48x48" type="image/png">
+    <link rel="icon" href="assets/truth-news-logo.png" sizes="48x48" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/styles.css">
@@ -20,7 +20,7 @@ $categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
     <header>
 
         <div class="logo">
-            <img src="assets/truth-news.png" alt="Truth News">
+            <img src="assets/truth-news-logo.png" alt="Truth News">
             <h1><a href="index.php">Truth News</a></h1>
         </div>
 

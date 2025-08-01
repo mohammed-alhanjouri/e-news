@@ -36,10 +36,6 @@ $latest_articles = mysqli_fetch_all($latest_result, MYSQLI_ASSOC);
     <main>
         <section class="breaking-news">
             <h2><i class="fas fa-bolt"></i>Breaking News</h2>
-            <article>
-                <h3>Example of Breaking News</h3>
-                <p>This is a brief description of the breaking news event.</p>
-            </article>
             <?php foreach ($breaking_news as $article): ?>
                 <article>
                     <h3><a href="article.php?id=<?php echo $article['article_id'] ?>"><?php echo htmlspecialchars($article['title']) ?></a></h3>
