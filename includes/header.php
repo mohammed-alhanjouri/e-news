@@ -28,7 +28,7 @@ $categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li>
-                    <a href="category.php">Category</a>
+                    <a href="#">Category</a>
                     <ul>
                         <?php foreach ($categories as $category): ?>
                         <li>
