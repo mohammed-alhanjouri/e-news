@@ -17,6 +17,17 @@ if(isset($_GET['id'])) {
     die("Article ID not provided.");
 }
 
+// Handle Comment Submission
+if(isset($_POST['submit_comment'])) {
+    $comment_text = mysqli_real_escape_string($connection, $_POST['comment_text']);
+    $user_id = 1; 
+
+    $insert_comment_sql = "INSERT INTO comments (article_id, user_id, comment_text, timestamp) 
+                            VALUES ($article_id, $user_id, '$comment_text', NOW())";
+    mysqli_query($connection, $insert_comment_sql);
+    header("Location: article.php?id=$article_id"); 
+}
+
 // Fetch Comments for the Article
 $comments_sql = "SELECT c.*, u.username 
                 FROM comments c 
@@ -111,8 +122,12 @@ function time_ago($timestamp) {
             <h2>Comments (<?php echo count($comments); ?>)</h2>
             <div class="comment-form">
                 <h3>Leave a Comment</h3>
-                <textarea placeholder="Share your thoughts..."></textarea>
-                <button>Post Comment</button>
+                <!-- <textarea placeholder="Share your thoughts..."></textarea>
+                <button>Post Comment</button> -->
+                <form action="" method="post">
+                    <textarea name="comment_text" placeholder="Share your thoughts..." required></textarea>
+                    <button type="submit" name="submit_comment">Post Comment</button>
+                </form>
             </div>
 
             <?php foreach($comments as $comment): ?>
