@@ -1,3 +1,4 @@
+/* CSS Variables & Global Styles */
 :root {
     --primary-color: #003366;
     --secondary-color: #0073e6;
@@ -23,10 +24,11 @@ body {
     line-height: 1.6;
 }
 
+/* Typography */
 h1 {
     font-size: 2rem;
 }
-h2{
+h2 {
     font-size: 1.5rem;
 }
 h3 {
@@ -34,21 +36,23 @@ h3 {
     color: var(--primary-color);
 }
 
-p,a {
+p, a {
     font-size: 1.1rem;
     color: var(--text-color);
 }
 
-h2 a , h3 a {
+/* Heading Links */
+h2 a, h3 a {
     text-decoration: none;
     color: var(--primary-color);
     font-size: 1.3rem;
     transition: color 0.3s ease;
 }
-h2 a:hover , h3 a:hover {
+h2 a:hover, h3 a:hover {
     color: var(--secondary-color);
 }
 
+/* Button Style */
 button {
     padding: 8px 16px;
     background-color: var(--secondary-color);
@@ -56,15 +60,17 @@ button {
     border-radius: 5px;
     color: white;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 button:hover {
     background-color: var(--button-hover);
-    transition: background-color 0.3s ease;
 }
 
-/* Header Styling */
 
-header{
+
+/* Header Styles */
+
+header {
     background-color: var(--primary-color);
     color: white;
     padding: 15px 20px;
@@ -115,12 +121,12 @@ header{
     text-decoration: none;
     padding: 8px 12px;
     font-size: 1.2rem;
+    transition: all 0.3s ease;
 }
 .header-nav a:hover {
     background-color: rgba(255,255,255,0.1);
     color: var(--accent-color);
     border-radius: 5px;
-    transition: all 0.3s ease;
 }
 
 .header-nav li ul a {
@@ -158,7 +164,6 @@ header{
 }
 
 
-/* Home Page Style */
 
 /* Main Layout Container Styling */
 
@@ -170,6 +175,19 @@ header{
     grid-template-columns: 1fr 300px;
     gap: 30px;
 }
+
+/* Section Styling */
+.section {
+    margin-bottom: 40px;
+}
+
+.section h2 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+}
+
 
 /* Breaking News Section Styling */
 
@@ -204,18 +222,6 @@ header{
     margin-bottom: 8px;
 }
 
-/* Section Styling */
-
-.section {
-    margin-bottom: 40px;
-}
-
-.section h2 {
-    color: var(--primary-color);
-    margin-bottom: 25px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--border-color);
-}
 
 /* Featured Articles Styling */
 
@@ -251,10 +257,12 @@ header{
 }
 .featured-articles article h3 a{
     color: var(--text-color);
+    transition: color 0.3s ease;
 }
 .featured-articles article h3 a:hover {
     color: var(--secondary-color);
 }
+
 
 /* Latest News Styling */
 
@@ -262,7 +270,6 @@ header{
     display: flex;
     align-items: center;
     gap: 20px;
-    /* height: 150px; */
     background: white;
     border-radius: 10px;
     box-shadow: var(--shadow);
@@ -290,6 +297,7 @@ header{
     padding: 5px 0;
 }
 
+
 /* Category-wise News Section Styling */
 
 .category-grid {
@@ -314,6 +322,7 @@ header{
 .category-grid h3 {
     margin-bottom: 10px;
 }
+
 
 /* Sidebar Styling */
 
@@ -359,79 +368,38 @@ header{
     border-radius: 5px;
 }
 
-/* Footer Styling */
 
-footer {
-    background: var(--primary-color);
-    color: white;
-    text-align: center;
-    padding: 40px 0px 20px 0;
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-}
-footer h3{
-    color: white;
-}
+/* Newsletter */
 
-.footer-about {
-    max-width: 350px;
-    text-align: left;
+.newsletter {
+    background-color: #f0f7ff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 15px;
 }
-.footer-about h2 {
-    font-size: 1.8rem;
-    color: var(--accent-color);
-}
-.footer-about p {
-    margin-bottom: 10px;
-    color: white;
+
+.newsletter p {
+    font-size: 1rem;
 }
 
-.footer-links {
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.newsletter input {
+    width: 100%;
+    padding: 7px;
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 5px;
 }
-.footer-links ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.newsletter input:focus {
+    border-color: var(--secondary-color);
+    outline: none;
 }
-.footer-links ul li a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-.footer-links ul li a:hover {
-    color: var(--accent-color);
-}
-
-.footer-social {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-.footer-social a i {
-    margin: 15px;
-    color: white;
-    font-size: 1.3rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-.footer-social a i:hover {
-    color: var(--accent-color);
-    transform: scale(1.2);
-}
-
 
 
 /* Category Page Style */
-
 .category-header {
     margin-bottom: 30px;
     padding-bottom: 20px;
@@ -509,6 +477,9 @@ footer h3{
     margin-right: 5px;
 }
 
+
+/* Pagination */
+
 .pagination {
     display: flex;
     gap: 10px;
@@ -540,38 +511,9 @@ footer h3{
     border-color: var(--button-hover);
 }
 
-/* Newsletter */
-
-.newsletter {
-    background-color: #f0f7ff;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-.newsletter p {
-    font-size: 1rem;
-}
-
-.newsletter input {
-    width: 100%;
-    padding: 7px;
-    border: 2px solid var(--border-color);
-    color: var(--text-color);
-    border-radius: 5px;
-}
-.newsletter input:focus {
-    border-color: var(--secondary-color);
-    outline: none;
-}
 
 
-
-/* Article Page Style */
+/* Single Article Page Style */
 
 .single-article {
     background: white;
@@ -586,62 +528,16 @@ footer h3{
 
 .article-data {
     margin-bottom: 25px;
-    /* display: flex;
-    flex-wrap: wrap;
-    gap: 20px; */
     color: #666;
     font-size: 0.9rem;
 }
 
 .article-featured-image {
     width: 100%;
-    /* max-height: 500px; */
     object-fit: cover;
     border-radius: 5px;
     margin-bottom: 25px;
     background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
-}
-
-.article-intro {
-    font-size: 1.3rem;
-    margin-bottom: 25px;
-    font-weight: 500;
-}
-.article-content h2 {
-    margin: 30px 0 15px;
-}
-.article-content p {
-    margin-bottom: 20px;
-}
-.article-content ul {
-    margin-bottom: 20px;
-    padding-left: 20px;
-}
-.article-content blockquote {
-    border-left: 4px solid var(--secondary-color);
-    padding-left: 20px;
-    margin: 25px 0;
-    font-style: italic;
-    color: #555;
-}
-.article-inline-image {
-    max-width: 100%;
-    height: auto;
-    margin: 20px 0;
-    border-radius: 5px;
-    background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
-}
-.article-tags {
-    margin: 30px 0;
-}
-.article-tags a {
-    display: inline-block;
-    background-color: #f0f0f0;
-    padding: 5px 12px;
-    border-radius: 20px;
-    margin-right: 10px;
-    font-size: 0.9rem;
-    text-decoration: none;
 }
 
 .article-actions {
@@ -671,6 +567,7 @@ footer h3{
     align-items: center;
     gap: 5px;
 }
+
 
 /* Comments Section */
 
@@ -718,7 +615,6 @@ footer h3{
 }
 .comment-content h4 {
     margin-bottom: 5px;
-    /* color: var(--primary-color); */
 }
 .comment-content h4 span {
     font-weight: normal;
@@ -735,6 +631,7 @@ footer h3{
     color: #666;
     text-decoration: none;
 }
+
 
 /* Related Articles */
 
@@ -774,6 +671,7 @@ footer h3{
     font-size: 1.2rem;
 }
 
+
 /* Author Bio */
 
 .author-bio {
@@ -807,4 +705,75 @@ footer h3{
 }
 .author-social a {
     font-size: 1.2rem;
+}
+
+
+
+/* Footer Styling */
+
+footer {
+    background: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 40px 0px 20px 0;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+footer h3{
+    color: white;
+}
+
+.footer-about {
+    max-width: 350px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.footer-about h2 {
+    font-size: 1.8rem;
+    color: var(--accent-color);
+}
+.footer-about p {
+    margin-bottom: 10px;
+    color: white;
+}
+
+.footer-links {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.footer-links ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.footer-links ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.footer-links ul li a:hover {
+    color: var(--accent-color);
+}
+
+.footer-social {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.footer-social a i {
+    margin: 15px;
+    color: white;
+    font-size: 1.3rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+.footer-social a i:hover {
+    color: var(--accent-color);
+    transform: scale(1.2);
 }

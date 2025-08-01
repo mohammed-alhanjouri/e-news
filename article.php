@@ -97,7 +97,7 @@ function time_ago($timestamp) {
             <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="<?php echo htmlspecialchars($article['title']); ?>" class="article-featured-image">
 
             <div class="article-content">
-                <?php echo htmlspecialchars($article['content']); ?>
+                <p><?php echo htmlspecialchars($article['content']); ?></p>
             </div>
 
             <div class="article-actions">
