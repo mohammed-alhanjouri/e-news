@@ -21,7 +21,7 @@ $categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
 
         <div class="logo">
             <img src="assets/truth-news.png" alt="Truth News">
-            <h1>Truth News</h1>
+            <h1><a href="index.php">Truth News</a></h1>
         </div>
 
         <nav class="header-nav">

@@ -2,7 +2,7 @@
 :root {
     --primary-color: #003366;
     --secondary-color: #0073e6;
-    --accent-color: #ffd700;
+    --accent-color: #d6bea3;
     --button-hover: #005bb5;
     --text-color: #333;
     --bg-color: #f8f9fa;
@@ -42,6 +42,15 @@ p, a {
 }
 
 /* Heading Links */
+h1 a {
+    text-decoration: none;
+    color: white;
+    font-size: 2rem;
+    transition: color 0.3s ease;
+}
+h1 a:hover {
+    color: var(--accent-color);
+}
 h2 a, h3 a {
     text-decoration: none;
     color: var(--primary-color);
