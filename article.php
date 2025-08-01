@@ -26,6 +26,7 @@ if(isset($_POST['submit_comment'])) {
                             VALUES ($article_id, $user_id, '$comment_text', NOW())";
     mysqli_query($connection, $insert_comment_sql);
     header("Location: article.php?id=$article_id"); 
+    exit();
 }
 
 // Fetch Comments for the Article
@@ -122,8 +123,6 @@ function time_ago($timestamp) {
             <h2>Comments (<?php echo count($comments); ?>)</h2>
             <div class="comment-form">
                 <h3>Leave a Comment</h3>
-                <!-- <textarea placeholder="Share your thoughts..."></textarea>
-                <button>Post Comment</button> -->
                 <form action="" method="post">
                     <textarea name="comment_text" placeholder="Share your thoughts..." required></textarea>
                     <button type="submit" name="submit_comment">Post Comment</button>
