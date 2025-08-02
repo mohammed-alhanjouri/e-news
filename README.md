@@ -120,3 +120,14 @@ Mohammed Al Hanjouri
 GitHub: https://github.com/mohammed-alhanjouri
 
 LinkedIn: https://linkedin.com/in/mohammed-alhanjouri
+
+### Website Screenshots
+
+<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 03 00 PM" src="https://github.com/user-attachments/assets/75d6b965-2c40-400c-9a90-280537a2d458" />
+
+<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 03 30 PM" src="https://github.com/user-attachments/assets/c45689e9-c30f-4cc8-bc8b-713d81618a4c" />
+
+<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 04 30 PM" src="https://github.com/user-attachments/assets/f43bbb97-1828-432b-a469-e2627efa5eb4" />
+
+<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 05 09 PM" src="https://github.com/user-attachments/assets/ed5e3483-8122-4edb-81d3-a0f5b9b87800" />
+
