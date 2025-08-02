@@ -93,5 +93,7 @@ Category: Clickable categories on the navbar or homepage direct to filtered resu
 ## 🧑🏻‍💻 Developed by
 
 Mohammed Al Hanjouri
+
 GitHub: https://github.com/mohammed-alhanjouri
+
 LinkedIn: https://linkedin.com/in/mohammed-alhanjouri
