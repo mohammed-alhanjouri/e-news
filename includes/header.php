@@ -1,4 +1,5 @@
-<?php 
+<?php
+session_start();
 // Fetch all categories from DB
 $categories_result = mysqli_query($connection, "SELECT * FROM categories ORDER BY category_id ASC");
 $categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
@@ -51,7 +52,18 @@ $categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
 
 
         <div class="auth-buttons">
-            <button>Login</button>
-            <button>Sign Up</button>
+            <!-- <button onclick="location.href='login.php'">Login</button>
+            <button onclick="location.href='signup.php'">Sign Up</button> -->
+            <?php if (isset($_SESSION['username'])): ?>
+                <span style="color:white; font-size:1.1rem;">
+                    Welcome, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>
+                </span>
+                <a href="logout.php">
+                    <button>Logout</button>
+                </a>
+            <?php else: ?>
+                <a href="login.php"><button>Login</button></a>
+                <a href="signup.php"><button>Sign Up</button></a>
+            <?php endif; ?>
         </div>
     </header>
