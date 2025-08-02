@@ -24,25 +24,45 @@ Truth News is a dynamic and responsive PHP-based news website designed for real-
 ## 📁 Project Structure
 
 e-news/
+
 │
+
 ├── assets/
+
 │ ├── styles.css # Custom CSS styling
+
 │ └── truth-news-logo.png # Site logo
+
 │
+
 ├── config/
+
 │ └── db.php # Database connection
+
 │
+
 ├── includes/
+
 │ ├── header.php # Header with navigation (session-based)
+
 │ └── footer.php # Footer section
+
 │
+
 ├── article.php # Single article view
+
 ├── category.php # Category-wise article listing
+
 ├── index.php # Homepage with breaking, featured, and latest news
+
 ├── login.php # User login page
+
 ├── logout.php # Ends session and redirects
+
 ├── signup.php # User registration with validation
+
 ├── search.php # Article keyword search
+
 └── news_db.sql # MySQL database schema and sample data
 
 
