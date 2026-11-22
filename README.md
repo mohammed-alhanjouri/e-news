@@ -1,133 +1,135 @@
 # 📰 Truth News — E-News Portal
 
-Truth News is a dynamic and responsive PHP-based news website designed for real-time publishing of breaking news, featured stories, and category-based articles. The platform includes user authentication, article search, pagination, and comment count functionalities — all managed with a clean, organized structure.
+Truth News is a dynamic and responsive PHP-based news website for publishing breaking news, featured stories, and category-based articles. It includes user authentication, article search, pagination, and comments, all organized in a clean folder structure.
 
 ## 🚀 Features
 
-- User Signup & Login (Session-based Authentication)
-- Dynamic Article Display (Breaking, Featured, Latest)
-- Category-wise Article Filtering
-- Article Search Functionality
-- Comment Count for Each Article
-- Pagination Support
-- Responsive Design with CSS Variables
-- Clean Folder Structure with Reusable Components
+- User Signup & Login (session-based authentication, hashed passwords)
+- Dynamic article display (Breaking, Featured, Latest)
+- Category-wise article filtering
+- Article search
+- Comments on articles
+- Pagination
+- Responsive design with CSS variables
+- Reusable header and footer components
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** HTML5, CSS3 (with custom variables), Responsive Design
-- **Backend:** PHP (Procedural)
-- **Database:** MySQL
-- **Server:** XAMPP / Apache
-- **Assets:** Logo and branding in `/assets/`
+- **Frontend:** HTML5, CSS3 (custom variables), responsive design
+- **Backend:** PHP 8 (procedural, MySQLi)
+- **Database:** MySQL / MariaDB
+- **Server:** Apache (via XAMPP)
 
 ## 📁 Project Structure
 
+```
 e-news/
-
-│
-
 ├── assets/
-
-│ ├── styles.css # Custom CSS styling
-
-│ └── truth-news-logo.png # Site logo
-
-│
-
+│   ├── styles.css            # Custom CSS styling
+│   └── truth-news-logo.png   # Site logo
 ├── config/
-
-│ └── db.php # Database connection
-
-│
-
+│   └── db.php                # Database connection settings
 ├── includes/
+│   ├── header.php            # Header with navigation (session-based)
+│   └── footer.php            # Footer section
+├── article.php               # Single article view with comments
+├── category.php              # Category-wise article listing
+├── index.php                 # Homepage: breaking, featured and latest news
+├── login.php                 # User login
+├── logout.php                # Ends the session and redirects
+├── signup.php                # User registration with validation
+├── search.php                # Article keyword search
+└── news_db.sql               # Database schema and sample data
+```
 
-│ ├── header.php # Header with navigation (session-based)
+## ⚙️ Run It Locally (XAMPP)
 
-│ └── footer.php # Footer section
+### 1. Get the code into XAMPP's `htdocs` folder
 
-│
+```bash
+cd /Applications/XAMPP/xamppfiles/htdocs   # macOS
+# cd C:\xampp\htdocs                         # Windows
+git clone https://github.com/mohammed-alhanjouri/e-news.git
+```
 
-├── article.php # Single article view
+> If you download the ZIP from GitHub instead, the folder is named `e-news-main`. Use that name in the URLs below.
 
-├── category.php # Category-wise article listing
+### 2. Start Apache and MySQL
 
-├── index.php # Homepage with breaking, featured, and latest news
+- **Windows / Intel Mac:** open the XAMPP control panel and start **Apache** and **MySQL**.
+- **Apple Silicon Mac (M1/M2/M3/M4):** XAMPP for macOS is Intel-only, so it needs Rosetta 2, and its control panel (`manager-osx`) won't open on Apple chips. Install Rosetta once, then start the servers from Terminal:
 
-├── login.php # User login page
+  ```bash
+  softwareupdate --install-rosetta --agree-to-license   # one time only
+  sudo /Applications/XAMPP/xamppfiles/xampp start      # start Apache + MySQL
+  sudo /Applications/XAMPP/xamppfiles/xampp stop       # stop them when done
+  ```
 
-├── logout.php # Ends session and redirects
+  > Rosetta 2 runs Intel apps only up to macOS 27. On macOS 28 and later, use a native PHP + MariaDB setup (for example via Homebrew) instead.
 
-├── signup.php # User registration with validation
+### 3. Import the database
 
-├── search.php # Article keyword search
+1. Open phpMyAdmin: `http://localhost/phpmyadmin`
+2. Go to the **Import** tab, choose `news_db.sql`, and click **Go**.
 
-└── news_db.sql # MySQL database schema and sample data
+The SQL file creates the `news_db` database itself, so you don't need to create one first.
 
+### 4. Configure the database connection
 
-## ⚙️ Installation & Setup
+Edit `config/db.php` with your MySQL credentials. XAMPP's default login is `root` with an empty password:
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/mohammed-alhanjouri/e-news.git
+```php
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'news_db');
+```
 
-2. **Import the database**:
+### 5. Open the site
 
-  - Open phpMyAdmin
+```
+http://localhost/e-news/
+```
 
-  - Create a new database (e.g., e_news)
+> **Port note:** if Apache is set to a different port (check the `Listen` line in `xamppfiles/etc/httpd.conf`), add it to the URL, e.g. `http://localhost:8080/e-news/`. If the browser says *"localhost refused to connect"*, this is usually why.
 
-  - Import the news_db.sql file located in the project root
+### 6. Log in
 
-3. **Configure database connection**:
-   
-  - Edit config/db.php with your DB credentials:
+Use one of the sample accounts, or create your own with **Sign Up**:
 
-    define('DB_HOST', 'localhost');
+| Username | Password | Role |
+|---|---|---|
+| admin | password123 | admin |
+| user1 | password123 | user |
+| user2 | password234 | user |
 
-    define('DB_USER', 'root');
-
-    define('DB_PASS', '');
-
-    define('DB_NAME', 'e_news');
-
-4. **Run the project**:
-  - Start Apache and MySQL via XAMPP
-  - Visit http://localhost/e-news/index.php in your browser
+Passwords are stored as bcrypt hashes and checked with `password_verify()`. If you add users directly in phpMyAdmin, store a hash (from PHP's `password_hash()`), not the plain password, or they won't be able to log in.
 
 ## 👤 User Authentication
 
-Signup: Create an account via signup.php
-
-Login: Log in using login.php
-
-Session Handling: The app stores session data and restricts access accordingly
-
-Logout: Ends session and redirects to home
-
+- **Sign up:** create an account via `signup.php` (passwords are hashed with `password_hash()`)
+- **Log in:** `login.php`
+- **Sessions:** the header shows Login/Sign Up or Logout depending on the session
+- **Log out:** `logout.php` ends the session and redirects home
 
 ## 🔍 Search & Filter
 
-Search: Users can search for articles via keywords (e.g., search.php?query=)
-
-Category: Clickable categories on the navbar or homepage direct to filtered results
+- **Search:** find articles by keyword, e.g. `search.php?query=gaza`
+- **Categories:** pick a category from the navbar to see filtered, paginated results
 
 ## 🧑🏻‍💻 Developed by
 
 Mohammed Al Hanjouri
 
-GitHub: https://github.com/mohammed-alhanjouri
-
-LinkedIn: https://linkedin.com/in/mohammed-alhanjouri
+- GitHub: https://github.com/mohammed-alhanjouri
+- LinkedIn: https://linkedin.com/in/mohammed-alhanjouri
 
 ### Website Screenshots
 
-<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 03 00 PM" src="https://github.com/user-attachments/assets/75d6b965-2c40-400c-9a90-280537a2d458" />
+<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 03 00 PM" src="https://github.com/user-attachments/assets/75d6b965-2c40-400c-9a90-280537a2d458" />
 
-<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 03 30 PM" src="https://github.com/user-attachments/assets/c45689e9-c30f-4cc8-bc8b-713d81618a4c" />
+<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 03 30 PM" src="https://github.com/user-attachments/assets/c45689e9-c30f-4cc8-bc8b-713d81618a4c" />
 
-<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 04 30 PM" src="https://github.com/user-attachments/assets/f43bbb97-1828-432b-a469-e2627efa5eb4" />
+<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 04 30 PM" src="https://github.com/user-attachments/assets/f43bbb97-1828-432b-a469-e2627efa5eb4" />
 
-<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 05 09 PM" src="https://github.com/user-attachments/assets/ed5e3483-8122-4edb-81d3-a0f5b9b87800" />
-
+<img width="1512" height="823" alt="Screenshot 2025-08-02 at 4 05 09 PM" src="https://github.com/user-attachments/assets/ed5e3483-8122-4edb-81d3-a0f5b9b87800" />
