@@ -8,36 +8,37 @@ CREATE TABLE users(
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'user') DEFAULT 'user'
 );
--- Insert sample users
+-- Insert sample users (passwords are bcrypt hashes; plain-text logins:
+-- admin/password123, user1/password123, user2/password234, user3/password345, user4/password456)
 INSERT INTO users (username, email, password, role)
 VALUES (
         'admin',
         'admin@example.com',
-        'password123',
+        '$2y$10$2LeA88gn/EXdCl6Pi8qNJuLRXE3lQVIHmYPKRQ.1iLW3OzRUaDsnK',
         'admin'
     ),
     (
         'user1',
         'user1@example.com',
-        'password123',
+        '$2y$10$2LeA88gn/EXdCl6Pi8qNJuLRXE3lQVIHmYPKRQ.1iLW3OzRUaDsnK',
         'user'
     ),
     (
         'user2',
         'user2@example.com',
-        'password234',
+        '$2y$10$Ki5ZYdGbx6J8nv1nyayp1ucPpvgKzOfFFOJCOdf528GUXdDjTRVfy',
         'user'
     ),
     (
         'user3',
         'user3@example.com',
-        'password345',
+        '$2y$10$6R/2M78Uft6T7XiUo9ho2Ope1ZIsSu9rln7WeQjKUGc563zuhfuCG',
         'user'
     ),
     (
         'user4',
         'user4@example.com',
-        'password456',
+        '$2y$10$TDwI0OqNgEEMebCWIJy3NuW/VQWXwZy.1n6R7TkZ4c2aoKfAquDjm',
         'user'
     );
 -- Create categories Tables
