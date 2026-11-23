@@ -7,11 +7,17 @@ if (isset($_POST['submit'])) {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    $query = "SELECT * FROM users WHERE username='$username'";
-    $result = mysqli_query($connection, $query);
+    // Prepared statement: the username is sent separately from the SQL,
+    // so it can never change what the query does (prevents SQL injection)
+    $stmt = mysqli_prepare($connection, "SELECT user_id, username, password, role FROM users WHERE username = ?");
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    mysqli_stmt_close($stmt);
 
-    $user = mysqli_fetch_assoc($result);
     if ($user && password_verify($password, $user['password'])) {
+        // New session ID after login (prevents session fixation)
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];

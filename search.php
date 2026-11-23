@@ -5,7 +5,7 @@ include 'config/db.php';
 // Pagination
 $articles_per_page = 3;
 if (isset($_GET['page'])) {
-    $current_page = intval($_GET['page']);
+    $current_page = max(1, intval($_GET['page'])); // never below page 1
 } else {
     $current_page = 1;
 }
@@ -15,37 +15,43 @@ $offset = ($current_page - 1) * $articles_per_page;
 // Search Functionality - Allow users to search for articles by keywords.
 $search_query = isset($_GET['query']) ? trim($_GET['query']) : '';
 $search_results = [];
+$total_pages = 0;
 
 if (!empty($search_query)) {
-    $total_sql = "SELECT COUNT(*) AS total FROM articles 
-                WHERE title LIKE '%$search_query%' 
-                OR content LIKE '%$search_query%'";
-    $total_result = mysqli_query($connection, $total_sql);
-    $total_articles = mysqli_fetch_assoc($total_result)['total'];
+    // Wrap the keyword in % for LIKE; the value is bound, never pasted into the SQL
+    $like = '%' . $search_query . '%';
+
+    // Prepared statement (prevents SQL injection)
+    $total_stmt = mysqli_prepare($connection, "SELECT COUNT(*) AS total FROM articles WHERE title LIKE ? OR content LIKE ?");
+    mysqli_stmt_bind_param($total_stmt, "ss", $like, $like);
+    mysqli_stmt_execute($total_stmt);
+    $total_articles = mysqli_fetch_assoc(mysqli_stmt_get_result($total_stmt))['total'];
+    mysqli_stmt_close($total_stmt);
     $total_pages = ceil($total_articles / $articles_per_page);
 
     // Perform the search operation
-    $search_results = searchArticles($search_query, $articles_per_page, $offset);
+    $search_results = searchArticles($like, $articles_per_page, $offset);
 }
 
-function searchArticles($keyword, $limit, $offset) {
-    // This function should connect to the database and fetch articles matching the query
+function searchArticles($like, $limit, $offset) {
+    // Fetch the articles matching the search keyword for the current page
     global $connection;
-
-    // Escapes special characters in a string for use in an SQL statement
-    $keyword = mysqli_real_escape_string($connection, $keyword);
 
     $search_sql = "SELECT a.*, u.username, c2.category_name,
                         (SELECT COUNT(*) FROM comments c WHERE c.article_id = a.article_id) AS comment_count
                     FROM articles a
                     JOIN users u ON a.author_id = u.user_id
                     JOIN categories c2 ON a.category_id = c2.category_id
-                    WHERE a.title LIKE '%$keyword%'
-                    OR a.content LIKE '%$keyword%'
+                    WHERE a.title LIKE ?
+                    OR a.content LIKE ?
                     ORDER BY a.published_date DESC
-                    LIMIT $limit OFFSET $offset";
-    $search_result = mysqli_query($connection, $search_sql);
-    return mysqli_fetch_all($search_result, MYSQLI_ASSOC);
+                    LIMIT ? OFFSET ?";
+    $stmt = mysqli_prepare($connection, $search_sql);
+    mysqli_stmt_bind_param($stmt, "ssii", $like, $like, $limit, $offset);
+    mysqli_stmt_execute($stmt);
+    $results = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+    mysqli_stmt_close($stmt);
+    return $results;
 }
 
 
@@ -87,19 +93,19 @@ function searchArticles($keyword, $limit, $offset) {
             
         <div class="pagination">
             <?php if ($current_page > 1): ?>
-                <a href="search.php?query=<?php echo $search_query; ?>&page=<?php echo $current_page - 1; ?>">
+                <a href="search.php?query=<?php echo urlencode($search_query); ?>&page=<?php echo $current_page - 1; ?>">
                     <i class="fas fa-chevron-left"></i>
                 </a>
             <?php endif; ?>
 
             <?php for ($page = 1; $page <= $total_pages; $page++): ?>
-                <a href="search.php?query=<?php echo $search_query; ?>&page=<?php echo $page; ?>" class="<?php echo ($page == $current_page) ? 'active' : ''; ?>">
+                <a href="search.php?query=<?php echo urlencode($search_query); ?>&page=<?php echo $page; ?>" class="<?php echo ($page == $current_page) ? 'active' : ''; ?>">
                     <?php echo $page; ?>
                 </a>
             <?php endfor; ?>
 
             <?php if ($current_page < $total_pages): ?>
-                <a href="search.php?query=<?php echo $search_query; ?>&page=<?php echo $current_page + 1; ?>">
+                <a href="search.php?query=<?php echo urlencode($search_query); ?>&page=<?php echo $current_page + 1; ?>">
                     <i class="fas fa-chevron-right"></i>
                 </a>
             <?php endif; ?>

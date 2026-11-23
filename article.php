@@ -20,13 +20,21 @@ if(isset($_GET['id'])) {
 
 // Handle Comment Submission
 if(isset($_POST['submit_comment'])) {
-    $comment_text = mysqli_real_escape_string($connection, $_POST['comment_text']);
-    $user_id = intval($_SESSION['user_id']); 
+    // Only logged-in users can comment
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: login.php");
+        exit();
+    }
 
-    $insert_comment_sql = "INSERT INTO comments (article_id, user_id, comment_text, timestamp) 
-                            VALUES ($article_id, $user_id, '$comment_text', NOW())";
-    mysqli_query($connection, $insert_comment_sql);
-    header("Location: article.php?id=$article_id"); 
+    $comment_text = trim($_POST['comment_text']);
+    $user_id = intval($_SESSION['user_id']);
+
+    // Prepared statement (prevents SQL injection)
+    $comment_stmt = mysqli_prepare($connection, "INSERT INTO comments (article_id, user_id, comment_text, timestamp) VALUES (?, ?, ?, NOW())");
+    mysqli_stmt_bind_param($comment_stmt, "iis", $article_id, $user_id, $comment_text);
+    mysqli_stmt_execute($comment_stmt);
+    mysqli_stmt_close($comment_stmt);
+    header("Location: article.php?id=$article_id");
     exit();
 }
 
