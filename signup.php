@@ -9,18 +9,23 @@ if (isset($_POST['submit'])) {
     $password = trim($_POST['password']);
 
     // Check if username or email already exists
-    $check_query = "SELECT * FROM users WHERE username='$username' OR email='$email'";
-    $check_result = mysqli_query($connection, $check_query);
-    $checked = mysqli_fetch_assoc($check_result);
+    // Prepared statement (prevents SQL injection)
+    $check_stmt = mysqli_prepare($connection, "SELECT user_id FROM users WHERE username = ? OR email = ?");
+    mysqli_stmt_bind_param($check_stmt, "ss", $username, $email);
+    mysqli_stmt_execute($check_stmt);
+    $checked = mysqli_fetch_assoc(mysqli_stmt_get_result($check_stmt));
+    mysqli_stmt_close($check_stmt);
 
     if ($checked) {
         $error_message = "Username or Email already exists.";
     } else {
         // Hash the password before storing
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $insert_query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashed_password')";
-        
-        if (mysqli_query($connection, $insert_query)) {
+        $insert_stmt = mysqli_prepare($connection, "INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        mysqli_stmt_bind_param($insert_stmt, "sss", $username, $email, $hashed_password);
+
+        if (mysqli_stmt_execute($insert_stmt)) {
+            session_regenerate_id(true);
             $_SESSION['user_id'] = mysqli_insert_id($connection);
             $_SESSION['username'] = $username;
             $_SESSION['role'] = 'user'; // Default role
